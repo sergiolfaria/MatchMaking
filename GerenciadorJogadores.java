@@ -8,9 +8,12 @@ import java.util.Scanner;
 public class GerenciadorJogadores {
     private ListaDuplamenteEncadeada listaJogadores;
     private String arquivoJogadores = "jogadores.txt";
+    private GerenciadorPartidas gerenciadorPartidas;
+    Jogador jogador = new Jogador(0,"","",0);
 
     public GerenciadorJogadores(Jogador jogador) {
-        listaJogadores = new ListaDuplamenteEncadeada(jogador);
+        listaJogadores = new ListaDuplamenteEncadeada();
+        
     }
 
     public void adicionarJogador() {
@@ -82,5 +85,40 @@ public class GerenciadorJogadores {
         } catch (IOException e) {
             System.out.println("Erro ao carregar jogadores: " + e.getMessage());
         }
+    }
+
+    public void listarPartidas() {
+        gerenciadorPartidas.listarPartidasEmAndamento(); // chamar o método listarPartidas do Gerenciador de Partidas
+    }
+
+
+   public Jogador parearJogadores(String role) {
+       int pontuacaoMinima = jogador.getPontuacaoHabilidade();
+       No noAtual = jogador.getPrimeiro();
+       Jogador jogadorEscolhido = null;
+   
+       while (noAtual != null) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador != null && jogador.getRole().equals(role) && jogador.getPontuacaoHabilidade() >= pontuacaoMinima) {
+               if (jogadorEscolhido == null || jogador.getPontuacaoHabilidade() < jogadorEscolhido.getPontuacaoHabilidade()) {
+                   jogadorEscolhido = jogador;
+               }
+           }
+           noAtual = noAtual.getProximo();
+       }
+   
+       jogador.removerJogador(jogadorEscolhido);
+       return jogadorEscolhido;
+   }
+
+    public void removerJogadorPartida() {
+        String nomePartida = Utils.lerTexto("Informe o nome da partida: ");
+        String nomeJogador = Utils.lerTexto("Informe o nome do jogador: ");
+        gerenciadorPartidas.removerJogadorPartida(nomePartida, nomeJogador); // chamar o método removerJogadorPartida do Gerenciador de Partidas
+    }
+
+    public void listarJogadoresPartida() {
+        String nomePartida = Utils.lerTexto("Informe o nome da partida: ");
+        gerenciadorPartidas.listarJogadoresPartida(nomePartida); // chamar o método listarJogadoresPartida do Gerenciador de Partidas
     }
 }
