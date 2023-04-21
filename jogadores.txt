@@ -1,5 +1,0 @@
-brenim;24;Bardo;9000
-sergim;10;Mago;8000
-gus;1;tanker;9000
-sergim;2;suporte;9000
-alyso;3;Mago;9000
