@@ -17,9 +17,9 @@ public class ListaDuplamenteEncadeada {
    }
    
       public ListaDuplamenteEncadeada(Jogador jogador) {
-         this();
-         addFirst(jogador);
-      }
+          this();
+       }
+
     public void addFirst(Jogador jogador){
       No novoNo = new No(jogador);
       novoNo.setJogador(jogador);
