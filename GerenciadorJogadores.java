@@ -83,10 +83,10 @@ public class GerenciadorJogadores {
             System.out.println("Erro ao carregar jogadores: " + e.getMessage());
         }
     }
-   /*  public void iniciar() {
+    public void iniciar() {
         listaJogadores.ordenarPorPontuacaoHabilidade();
-        ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeadaTime();
-        ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeadaTime();
+        ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
+        ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
         int pontuacaoTime1 = 0;
         int pontuacaoTime2 = 0;
         No noAtual = listaJogadores.getPrimeiro();
@@ -106,7 +106,7 @@ public class GerenciadorJogadores {
         salvarPartida(time1, time2, pontuacaoTime1, pontuacaoTime2);
         System.out.println("Partida salva com sucesso!");
     }
-   */
+   
     public void salvarPartida(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, int pontuacaoTime1, int pontuacaoTime2) {
        try {
            // Cria um objeto BufferedWriter para escrever no arquivo "partida.txt"
