@@ -2,7 +2,6 @@ public class No {
     private Jogador jogador;
     private No anterior;
     private No proximo;
-    
 
     public No(Jogador jogador) {
         this.jogador = jogador;
@@ -31,8 +30,6 @@ public class No {
     public void setProximo(No proximo) {
         this.proximo = proximo;
     }
-    
-
 }
 
 

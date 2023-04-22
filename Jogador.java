@@ -3,7 +3,6 @@ public class Jogador {
     private String nome;
     private String role;
     private int pontuacaoHabilidade;
-    private No primeiro;
     
 
     public Jogador(int id, String nome, String role, int pontuacaoHabilidade) {
@@ -24,9 +23,6 @@ public class Jogador {
 
     public String getRole() {
         return role;
-    }
-     public No getPrimeiro() {
-      return primeiro;
     }
 
     public int getPontuacaoHabilidade() {
