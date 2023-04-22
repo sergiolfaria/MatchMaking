@@ -16,9 +16,17 @@ public class ListaDuplamenteEncadeada {
        ultimo.setAnterior(primeiro);
    }
        public boolean isEmpty() {
-       return tamanho == 0;
+         return tamanho == 0;
        }
+        public int getTamanho() {
+        return tamanho;
+    }
+
+      public void setTamanho(int tamanho) {
+         this.tamanho = tamanho;
+    }
       
+     
       public ListaDuplamenteEncadeada(Jogador jogador) {
           this();
        }
@@ -123,5 +131,16 @@ public class ListaDuplamenteEncadeada {
         }
         noAtual = noAtual.getProximo();
     }
-   }  
+   }
+   public Jogador getRemovePrimeiro() {
+    if (isEmpty()) {
+        return null;
+    }
+    Jogador jogador = primeiro.getProximo().getJogador();
+    primeiro.setProximo(primeiro.getProximo().getProximo());
+    primeiro.getProximo().setAnterior(primeiro);
+    tamanho--;
+    return jogador;
+}
+  
 }

@@ -87,13 +87,7 @@ public class GerenciadorJogadores {
            System.out.println("Erro ao carregar jogadores: " + e.getMessage());
        }
    }
-   public void iniciar() {
-       carregarJogadores();
-       listaJogadores.ordenarPorPontuacaoHabilidade();
-       ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
-       ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
-       int pontuacaoTime1 = 0;
-       int pontuacaoTime2 = 0;
+   public void iniciar(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, int pontuacaoTime1, int pontuacaoTime2) {
        No noAtual = listaJogadores.getPrimeiro();
        for (int i = 0; i < 6 && noAtual != null; i++) {
            Jogador jogador = noAtual.getJogador();
@@ -129,9 +123,6 @@ public class GerenciadorJogadores {
        salvarPartida(time1, time2, pontuacaoTime1, pontuacaoTime2);
        System.out.println("Partida salva com sucesso!");
    }
-
-
-
 
 
    
@@ -173,5 +164,58 @@ public class GerenciadorJogadores {
        } catch (IOException e) {
            System.out.println("Erro ao salvar partida: " + e.getMessage());
        }
-   }   
+   }
+   public void selecionarJogadoresRolePontos() {
+    ListaDuplamenteEncadeada jogadoresSelecionados = new ListaDuplamenteEncadeada();
+    No noAtual = listaJogadores.getPrimeiro();
+
+    int pontuacaoMedia = 0;
+    int contadorJogadores = 0;
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        if (jogador != null) {
+            if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
+                pontuacaoMedia += jogador.getPontuacaoHabilidade();
+                contadorJogadores++;
+            }
+        }
+        noAtual = noAtual.getProximo();
+    }
+
+    pontuacaoMedia /= contadorJogadores; // Calcula a pontuação média dos jogadores selecionados
+
+    noAtual = listaJogadores.getPrimeiro();
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        if (jogador != null) {
+            if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
+                double variacao = Math.abs((double) jogador.getPontuacaoHabilidade() / pontuacaoMedia - 1);
+                if (variacao <= 0.15) {
+                    jogadoresSelecionados.addLast(jogador);
+                }
+            }
+        }
+        noAtual = noAtual.getProximo();
+    }
+
+    for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
+        Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
+        System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
+    }
+        for (int i = 0; i < jogadoresSelecionados.getTamanho(); i++) {
+       Jogador jogador = jogadoresSelecionados.get(i);
+       if (time1.size() < 3) {
+           time1.addLast(jogador);
+       } else {
+           time2.addLast(jogador);
+       }
+   }
+   
+   // call the iniciar method with the appropriate arguments
+   iniciar(time1, time2, pontuacaoTime1, pontuacaoTime2);
+   
+      }
 }
+
+   
+
