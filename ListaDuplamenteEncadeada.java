@@ -15,9 +15,24 @@ public class ListaDuplamenteEncadeada {
        primeiro.setProximo(ultimo);
        ultimo.setAnterior(primeiro);
    }
-   
+       public boolean isEmpty() {
+       return tamanho == 0;
+       }
+      
       public ListaDuplamenteEncadeada(Jogador jogador) {
           this();
+       }
+       public void addLast(Jogador jogador) {
+       No novoNo = new No(jogador);
+       if (isEmpty()) {
+           primeiro = novoNo;
+           ultimo = novoNo;
+       } else {
+           ultimo.setProximo(novoNo);
+           novoNo.setAnterior(ultimo);
+           ultimo = novoNo;
+       }
+       tamanho++;
        }
 
     public void addFirst(Jogador jogador){
@@ -27,10 +42,9 @@ public class ListaDuplamenteEncadeada {
       novoNo.setProximo(primeiro.getProximo());
       
       primeiro.getProximo().setAnterior(novoNo);
-     primeiro.setProximo(novoNo);
+      primeiro.setProximo(novoNo);
       tamanho++;
-   }
-
+     }
     public boolean contem(Jogador jogador) {
     No noAtual = primeiro;
     while (noAtual != null) {
@@ -42,8 +56,6 @@ public class ListaDuplamenteEncadeada {
     }
     return false;
 }
-
-
     public void removerPorNome(String nome) {
         No noAtual = primeiro;
         while (noAtual != null) {
@@ -109,8 +121,5 @@ public class ListaDuplamenteEncadeada {
         }
         noAtual = noAtual.getProximo();
     }
-}
-
-    
-   
+   }  
 }

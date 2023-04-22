@@ -21,7 +21,7 @@ public class GerenciadorJogadores {
 
         Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
 
-        listaJogadores.addFirst(jogador);
+        listaJogadores.addLast(jogador);
         salvarJogadores();
         System.out.println("Jogador adicionado com sucesso!");
     }
@@ -79,7 +79,7 @@ public class GerenciadorJogadores {
                String role = dados[2];
                int pontuacaoHabilidade = Integer.parseInt(dados[3]);
                Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
-               listaJogadores.addFirst(jogador);
+               listaJogadores.addLast(jogador);
            }
            reader.close();
        } catch (IOException e) {
@@ -97,10 +97,10 @@ public class GerenciadorJogadores {
            Jogador jogador = noAtual.getJogador();
            if (jogador != null) {
                if (i % 2 == 0) {
-                   time1.addFirst(jogador);
+                   time1.addLast(jogador);
                    pontuacaoTime1 += jogador.getPontuacaoHabilidade();
                } else {
-                   time2.addFirst(jogador);
+                   time2.addLast(jogador);
                    pontuacaoTime2 += jogador.getPontuacaoHabilidade();
                }
            }
@@ -166,7 +166,5 @@ public class GerenciadorJogadores {
        } catch (IOException e) {
            System.out.println("Erro ao salvar partida: " + e.getMessage());
        }
-   }
-
-   
+   }   
 }
