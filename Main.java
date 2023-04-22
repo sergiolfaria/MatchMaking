@@ -11,7 +11,7 @@ class Main{
             System.out.println("1. Adicionar jogador");
             System.out.println("2. Jogadores em espera");
             System.out.println("3. Times em espera");
-            System.out.println("4. gerar partidas");
+            System.out.println("4 gerar partidas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
