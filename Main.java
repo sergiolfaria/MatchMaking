@@ -1,6 +1,6 @@
 import java.util.Scanner;
 class Main{
-   
+
     public static void main(String[] args) {
         Jogador jogador = new Jogador(0,"","",0);
         GerenciadorJogadores gerenciador = new GerenciadorJogadores(jogador);
@@ -11,6 +11,7 @@ class Main{
             System.out.println("1. Adicionar jogador");
             System.out.println("2. Jogadores em espera");
             System.out.println("3. Times em espera");
+            System.out.println("4. gerar partidas");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -24,7 +25,10 @@ class Main{
                     gerenciador.listarFilaJogadores();
                     break;
                 case 3:
-                    gerenciador.iniciar();
+                    gerenciador.carregarJogadores();
+                    break;
+                case 4:
+                    gerenciador.selecionarJogadoresRolePontos();
                     break;
                 case 0:
                     System.out.println("Encerrando o programa...");

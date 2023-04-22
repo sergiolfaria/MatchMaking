@@ -132,15 +132,31 @@ public class ListaDuplamenteEncadeada {
         noAtual = noAtual.getProximo();
     }
    }
-   public Jogador getRemovePrimeiro() {
-    if (isEmpty()) {
-        return null;
+     public Jogador getRemovePrimeiro() {
+       if (isEmpty()) {
+           return null;
+       }
+       Jogador jogador = primeiro.getProximo().getJogador();
+       No proximoNo = primeiro.getProximo().getProximo();
+       if (proximoNo != null) {
+           proximoNo.setAnterior(primeiro);
+       }
+       primeiro.setProximo(proximoNo);
+       tamanho--;
+       return jogador;
+   }
+
+ public No get(int indice) {
+    if (indice < 0 || indice >= tamanho) {
+        throw new IndexOutOfBoundsException();
     }
-    Jogador jogador = primeiro.getProximo().getJogador();
-    primeiro.setProximo(primeiro.getProximo().getProximo());
-    primeiro.getProximo().setAnterior(primeiro);
-    tamanho--;
-    return jogador;
+    
+    No noAtual = primeiro.getProximo();
+    for (int i = 0; i < indice; i++) {
+        noAtual = noAtual.getProximo();
+    }
+    
+    return noAtual;
 }
-  
+
 }

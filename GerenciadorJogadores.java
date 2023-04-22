@@ -8,6 +8,11 @@ import java.util.Scanner;
 public class GerenciadorJogadores {
     private ListaDuplamenteEncadeada listaJogadores;
     private String arquivoJogadores = "jogadores.txt";
+    int pontuacaoTime1 = 0;
+    int pontuacaoTime2 = 0;
+    int indice = 0;
+    ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
+    ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
 
     public GerenciadorJogadores(Jogador jogador) {
         listaJogadores = new ListaDuplamenteEncadeada(jogador);
@@ -35,7 +40,6 @@ public class GerenciadorJogadores {
     }
 
     public void listarFilaJogadores() {
-        carregarJogadores();
         System.out.println("Lista de jogadores: ");
         No noAtual = listaJogadores.getPrimeiro();
         while (noAtual != null) {
@@ -165,56 +169,64 @@ public class GerenciadorJogadores {
            System.out.println("Erro ao salvar partida: " + e.getMessage());
        }
    }
-   public void selecionarJogadoresRolePontos() {
-    ListaDuplamenteEncadeada jogadoresSelecionados = new ListaDuplamenteEncadeada();
-    No noAtual = listaJogadores.getPrimeiro();
-
-    int pontuacaoMedia = 0;
-    int contadorJogadores = 0;
-    while (noAtual != null) {
-        Jogador jogador = noAtual.getJogador();
-        if (jogador != null) {
-            if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
-                pontuacaoMedia += jogador.getPontuacaoHabilidade();
-                contadorJogadores++;
-            }
-        }
-        noAtual = noAtual.getProximo();
-    }
-
-    pontuacaoMedia /= contadorJogadores; // Calcula a pontuação média dos jogadores selecionados
-
-    noAtual = listaJogadores.getPrimeiro();
-    while (noAtual != null) {
-        Jogador jogador = noAtual.getJogador();
-        if (jogador != null) {
-            if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
-                double variacao = Math.abs((double) jogador.getPontuacaoHabilidade() / pontuacaoMedia - 1);
-                if (variacao <= 0.15) {
-                    jogadoresSelecionados.addLast(jogador);
-                }
-            }
-        }
-        noAtual = noAtual.getProximo();
-    }
-
-    for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
-        Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
-        System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
-    }
-        for (int i = 0; i < jogadoresSelecionados.getTamanho(); i++) {
-       Jogador jogador = jogadoresSelecionados.get(i);
-       if (time1.size() < 3) {
-           time1.addLast(jogador);
-       } else {
-           time2.addLast(jogador);
+      public void selecionarJogadoresRolePontos() {
+       ListaDuplamenteEncadeada jogadoresSelecionados = new ListaDuplamenteEncadeada();
+       No noAtual = listaJogadores.getPrimeiro();
+   
+       int pontuacaoMedia = 0;
+       int contadorJogadores = 0;
+       while (noAtual != null) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador != null) {
+               if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
+                   pontuacaoMedia += jogador.getPontuacaoHabilidade();
+                   contadorJogadores++;
+               }
+           }
+           noAtual = noAtual.getProximo();
        }
-   }
    
-   // call the iniciar method with the appropriate arguments
-   iniciar(time1, time2, pontuacaoTime1, pontuacaoTime2);
+       pontuacaoMedia /= contadorJogadores; // Calcula a pontuação média dos jogadores selecionados
    
+       noAtual = listaJogadores.getPrimeiro();
+       while (noAtual != null) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador != null) {
+               if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
+                   double variacao = Math.abs((double) jogador.getPontuacaoHabilidade() / pontuacaoMedia - 1);
+                   if (variacao <= 0.15) {
+                       jogadoresSelecionados.addLast(jogador);
+                   }
+               }
+           }
+           noAtual = noAtual.getProximo();
+       }
+   
+       for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
+           Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
+           System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
+       }
+   
+       // Adiciona jogadores restantes às equipes
+     Jogador jogador;
+      noAtual = jogadoresSelecionados.getPrimeiro().getProximo(); // Começa no primeiro elemento da lista
+      while (noAtual != null) { // Continua até o final da lista
+          jogador = noAtual.getJogador();
+          if (jogador != null) {
+              if (time1.getTamanho() < 3) {
+                  time1.addLast(jogador);
+              } else {
+                  time2.addLast(jogador);
+              }
+          }
+          noAtual = noAtual.getProximo(); // Avança para o próximo elemento
       }
+
+      
+       // call the iniciar method with the appropriate arguments
+       iniciar(time1, time2, pontuacaoTime1, pontuacaoTime2);
+   }
+
 }
 
    
