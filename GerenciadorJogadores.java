@@ -35,6 +35,7 @@ public class GerenciadorJogadores {
     }
 
     public void listarJogadores() {
+        carregarJogadores();
         System.out.println("Lista de jogadores: ");
         No noAtual = listaJogadores.getPrimeiro();
         while (noAtual != null) {
@@ -86,7 +87,7 @@ public class GerenciadorJogadores {
            System.out.println("Erro ao carregar jogadores: " + e.getMessage());
        }
    }
-     public void iniciar() {
+   public void iniciar() {
        listaJogadores.ordenarPorPontuacaoHabilidade();
        ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
        ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
@@ -127,6 +128,11 @@ public class GerenciadorJogadores {
        salvarPartida(time1, time2, pontuacaoTime1, pontuacaoTime2);
        System.out.println("Partida salva com sucesso!");
    }
+
+
+
+
+
    
      public void salvarPartida(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, int pontuacaoTime1, int pontuacaoTime2) {
        try {
