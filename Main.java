@@ -9,8 +9,8 @@ class Main{
         do {
             System.out.println("---- GERENCIADOR DE JOGADORES ----");
             System.out.println("1. Adicionar jogador");
-            System.out.println("2. Ver jogadores em espera");
-            System.out.println("3. Ver partidas em andamento");
+            System.out.println("2. carregar Jogadores");
+            System.out.println("3. Listar jogadores");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -21,11 +21,16 @@ class Main{
                     gerenciador.adicionarJogador();
                     break;
                 case 2:
-                    gerenciador.listarJogadores();
+                    gerenciador.carregarJogadores();
                     break;
                 case 3:
-
+                    gerenciador.listarJogadores();
                     break;
+                 case 4:
+                    gerenciador.iniciar();
+                    
+                    break;
+
                 case 0:
                     System.out.println("Encerrando o programa...");
                     break;
