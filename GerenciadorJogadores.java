@@ -14,17 +14,21 @@ public class GerenciadorJogadores {
     }
 
     public void adicionarJogador() {
-        String nome = Utils.lerTexto("Informe o nome do jogador: ");
-        int id = Utils.lerInt("Informe o ID do jogador: ");
-        String role = Utils.lerTexto("Informe a role do jogador: ");
-        int pontuacaoHabilidade = Utils.lerInt("Informe a pontuação de habilidade do jogador: ");
+       String nome = Utils.lerTexto("Informe o nome do jogador: ");
+       int id = Utils.lerInt("Informe o ID do jogador: ");
+       String role;
+       do {
+           role = Utils.lerTexto("Informe a role do jogador (carregador, tanker, suporte ou mago): ");
+       } while (!role.equals("carregador") && !role.equals("tanker") && !role.equals("suporte") && !role.equals("mago"));
+       int pontuacaoHabilidade = Utils.lerInt("Informe a pontuação de habilidade do jogador: ");
+   
+       Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
+   
+       listaJogadores.addLast(jogador);
+       salvarJogadores();
+       System.out.println("Jogador adicionado com sucesso!");
+   }
 
-        Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
-
-        listaJogadores.addFirst(jogador);
-        salvarJogadores();
-        System.out.println("Jogador adicionado com sucesso!");
-    }
 
     public void removerJogador() {
         String nome = Utils.lerTexto("Informe o nome do jogador que deseja remover: ");
@@ -35,6 +39,7 @@ public class GerenciadorJogadores {
     }
 
     public void listarJogadores() {
+        carregarJogadores();
         System.out.println("Lista de jogadores: ");
         No noAtual = listaJogadores.getPrimeiro();
         while (noAtual != null) {
@@ -76,7 +81,7 @@ public class GerenciadorJogadores {
                 String role = dados[2];
                 int pontuacaoHabilidade = Integer.parseInt(dados[3]);
                 Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
-                listaJogadores.addFirst(jogador);
+                listaJogadores.addLast(jogador);
             }
             reader.close();
         } catch (IOException e) {
@@ -94,10 +99,10 @@ public class GerenciadorJogadores {
             Jogador jogador = noAtual.getJogador();
             if (jogador != null) {
                 if (i % 2 == 0) {
-                    time1.addFirst(jogador);
+                    time1.addLast(jogador);
                     pontuacaoTime1 += jogador.getPontuacaoHabilidade();
                 } else {
-                    time2.addFirst(jogador);
+                    time2.addLast(jogador);
                     pontuacaoTime2 += jogador.getPontuacaoHabilidade();
                 }
             }

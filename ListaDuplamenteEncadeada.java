@@ -26,6 +26,16 @@ public class ListaDuplamenteEncadeada {
      primeiro.setProximo(novoNo);
       tamanho++;
    }
+   public void addLast(Jogador jogador){
+      No novoNo = new No(jogador);
+      novoNo.setJogador(jogador);
+      novoNo.setProximo(ultimo);
+      novoNo.setAnterior(ultimo.getAnterior());
+      
+      ultimo.getAnterior().setProximo(novoNo);
+      ultimo.setAnterior(novoNo);
+      tamanho++;
+   }
 
     public boolean contem(Jogador jogador) {
     No noAtual = primeiro;
