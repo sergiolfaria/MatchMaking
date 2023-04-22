@@ -22,7 +22,6 @@ public class ListaDuplamenteEncadeada {
       public ListaDuplamenteEncadeada(Jogador jogador) {
           this();
        }
-       
        public void addLast(Jogador jogador) {
        No novoNo = new No(jogador);
        if (isEmpty()) {

@@ -21,7 +21,7 @@ class Main{
                     gerenciador.adicionarJogador();
                     break;
                 case 2:
-                    gerenciador.listarJogadores();
+                    gerenciador.listarFilaJogadores();
                     break;
                 case 3:
                     gerenciador.iniciar();

@@ -34,7 +34,7 @@ public class GerenciadorJogadores {
         System.out.println("Jogador removido com sucesso!");
     }
 
-    public void listarJogadores() {
+    public void listarFilaJogadores() {
         carregarJogadores();
         System.out.println("Lista de jogadores: ");
         No noAtual = listaJogadores.getPrimeiro();
@@ -88,6 +88,7 @@ public class GerenciadorJogadores {
        }
    }
    public void iniciar() {
+       carregarJogadores();
        listaJogadores.ordenarPorPontuacaoHabilidade();
        ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
        ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
