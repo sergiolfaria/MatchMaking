@@ -152,6 +152,15 @@ public class GerenciadorJogadores {
         }
         noAtualEspera = noAtualEspera.getProximo();
     }
+    // Removendo jogadores em partida da lista de espera
+    No noAtualJogadoresEmPartida = jogadoresEmPartida.getPrimeiro();
+    while (noAtualJogadoresEmPartida != null) {
+        Jogador jogadorEmPartida = noAtualJogadoresEmPartida.getJogador();
+        if (jogadorEmPartida != null) {
+            listaEspera.removerPorNome(jogadorEmPartida.getNome());
+        }
+        noAtualJogadoresEmPartida = noAtualJogadoresEmPartida.getProximo();
+    }
 
     jogadoresEmPartida = new ListaDuplamenteEncadeada();
     time1 = new ListaDuplamenteEncadeada();
