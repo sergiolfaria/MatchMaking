@@ -123,7 +123,7 @@ public class GerenciadorJogadores {
                    time1.addLast(jogador);
                    pontuacaoTime1 += jogador.getPontuacaoHabilidade();
                    jogadoresParaRemover.addLast(jogador);
-               } else if (time2.getTamanho() < 3 && !time2.contains(role) && !time1.buscar(jogador)) {
+               } else if (time2.getTamanho() < 3 && !time2.containsRole(role)) {
                    time2.addLast(jogador);
                    pontuacaoTime2 += jogador.getPontuacaoHabilidade();
                    jogadoresParaRemover.addLast(jogador);
@@ -134,7 +134,6 @@ public class GerenciadorJogadores {
            noAtual = noAtual.getProximo();
        }
    }
-   
    
    public void removerJogadoresSelecionados(ListaDuplamenteEncadeada jogadoresParaRemover) {
        No noRemover = jogadoresParaRemover.getPrimeiro();
@@ -167,37 +166,37 @@ public class GerenciadorJogadores {
        limparJogadoresComTime();
    }
       public void exibirInformacoes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
-          // Exibir informações do Time 1
-          System.out.println("Time 1 - Habilidade " + pontuacaoTime1 + ":");
-          No noAtualTime1 = time1.getPrimeiro();
-          while (noAtualTime1 != null) {
-              Jogador jogador = noAtualTime1.getJogador();
-              System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-              noAtualTime1 = noAtualTime1.getProximo();
-          }
-      
-          // Exibir informações do Time 2
-          System.out.println("Time 2 - Habilidade " + pontuacaoTime2 + ":");
-          No noAtualTime2 = time2.getPrimeiro();
-          while (noAtualTime2 != null) {
-              Jogador jogador = noAtualTime2.getJogador();
-              if (jogador != null) {
-                  System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-              }
-              noAtualTime2 = noAtualTime2.getProximo();
-          }
-      
-          // Exibir informações da Lista de Espera
-          System.out.println("Lista de espera:");
-          No noAtualListaEspera = listaEspera.getPrimeiro();
-          while (noAtualListaEspera != null) {
-              Jogador jogador = noAtualListaEspera.getJogador();
-              if (jogador != null) {
-                  System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-              }
-              noAtualListaEspera = noAtualListaEspera.getProximo();
-          }
-      }
+       // Exibir informações do Time 1
+       System.out.println("Time 1 - Habilidade " + pontuacaoTime1 + ":");
+       No noAtualTime1 = time1.getPrimeiro();
+       while (noAtualTime1 != null) {
+           Jogador jogador = noAtualTime1.getJogador();
+           System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+           noAtualTime1 = noAtualTime1.getProximo();
+       }
+   
+       // Exibir informações do Time 2
+       System.out.println("Time 2 - Habilidade " + pontuacaoTime2 + ":");
+       No noAtualTime2 = time2.getPrimeiro();
+       while (noAtualTime2 != null) {
+           Jogador jogador = noAtualTime2.getJogador();
+           if (jogador != null) {
+               System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+           }
+           noAtualTime2 = noAtualTime2.getProximo();
+       }
+   
+       // Exibir informações da Lista de Espera
+       System.out.println("Lista de espera:");
+       No noAtualListaEspera = listaEspera.getPrimeiro();
+       while (noAtualListaEspera != null) {
+           Jogador jogador = noAtualListaEspera.getJogador();
+           if (jogador != null) {
+               System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+           }
+           noAtualListaEspera = noAtualListaEspera.getProximo();
+       }
+   }
 
    
          
@@ -241,75 +240,55 @@ public class GerenciadorJogadores {
            System.out.println("Erro ao salvar partida: " + e.getMessage());
        }
    }
-   public void selecionarJogadoresRolePontos() {
-       ListaDuplamenteEncadeada carregadores = new ListaDuplamenteEncadeada();
-       ListaDuplamenteEncadeada tankers = new ListaDuplamenteEncadeada();
-       ListaDuplamenteEncadeada suportes = new ListaDuplamenteEncadeada();
-       ListaDuplamenteEncadeada magos = new ListaDuplamenteEncadeada();
-   
-       No noAtual = listaJogadores.getPrimeiro();
-   
-       // Agrupar jogadores por role
-       while (noAtual != null) {
-           Jogador jogador = noAtual.getJogador();
-           if (jogador != null) {
-               String role = jogador.getRole();
-               switch (role) {
-                   case "carregador":
-                       carregadores.addLast(jogador);
-                       break;
-                   case "tanker":
-                       tankers.addLast(jogador);
-                       break;
-                   case "suporte":
-                       suportes.addLast(jogador);
-                       break;
-                   case "mago":
-                       magos.addLast(jogador);
-                       break;
-               }
-           }
-           noAtual = noAtual.getProximo();
-       }
-   
-       ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
-       ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
-   
-       // Atribuir um jogador de cada role para cada time
-       if (carregadores.getTamanho() >= 2) {
-           time1.addLast(carregadores.getRemovePrimeiro());
-           time2.addLast(carregadores.getRemovePrimeiro());
-       } else {
-           System.out.println("Não há jogadores suficientes com o role carregador para formar dois times.");
-           return;
-       }
-   
-       if (tankers.getTamanho() >= 2) {
-           time1.addLast(tankers.getRemovePrimeiro());
-           time2.addLast(tankers.getRemovePrimeiro());
-       } else {
-           System.out.println("Não há jogadores suficientes com o role tanker para formar dois times.");
-           return;
-       }
-   
-       if (suportes.getTamanho() >= 2) {
-           time1.addLast(suportes.getRemovePrimeiro());
-           time2.addLast(suportes.getRemovePrimeiro());
-       } else {
-           System.out.println("Não há jogadores suficientes com o role suporte para formar dois times.");
-           return;
-       }
-   
-       if (magos.getTamanho() >= 2) {
-           time1.addLast(magos.getRemovePrimeiro());
-           time2.addLast(magos.getRemovePrimeiro());
-       } else {
-           System.out.println("Não há jogadores suficientes com o role mago para formar dois times.");
-           return;
-       }
-   
-       // Chamar o método iniciar com os times apropriados
-       iniciar(time1, time2);
-   }
+  public void selecionarJogadoresRolePontos() {
+    ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
+    ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
 
+    No noAtual = listaJogadores.getPrimeiro();
+
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        if (jogador != null) {
+            String role = jogador.getRole();
+            if (time1.getTamanho() < 3 && !time1.containsRole(role)) {
+                time1.addLast(jogador);
+            } else if (time2.getTamanho() < 3 && !time2.containsRole(role)) {
+                time2.addLast(jogador);
+            }
+        }
+        noAtual = noAtual.getProximo();
+    }
+
+    // Verificar se os times têm roles diferentes e pontuações próximas (até 15% de diferença)
+    if (timesSatisfazemRequisitos(time1, time2)) {
+        iniciar(time1, time2);
+    } else {
+        System.out.println("Não foi possível criar times que satisfaçam os requisitos de roles e pontuação.");
+    }
+}
+
+   private boolean timesSatisfazemRequisitos(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2) {
+    if (time1.getTamanho() != 3 || time2.getTamanho() != 3) {
+        return false;
+    }
+
+    int pontuacaoTotalTime1 = 0;
+    int pontuacaoTotalTime2 = 0;
+    No noAtual = time1.getPrimeiro();
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        pontuacaoTotalTime1 += jogador.getPontuacaoHabilidade();
+        noAtual = noAtual.getProximo();
+    }
+    noAtual = time2.getPrimeiro();
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        pontuacaoTotalTime2 += jogador.getPontuacaoHabilidade();
+        noAtual = noAtual.getProximo();
+    }   
+
+    double diferencaPercentual = Math.abs((double) (pontuacaoTotalTime1 - pontuacaoTotalTime2) / ((pontuacaoTotalTime1 + pontuacaoTotalTime2) / 2)) * 100;
+
+    return diferencaPercentual <= 15;
+}
 }
