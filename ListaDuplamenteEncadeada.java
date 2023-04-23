@@ -222,6 +222,17 @@ public class ListaDuplamenteEncadeada {
        }
        return totalHabilidade;
    }
+   public boolean contains(Jogador jogador) {
+    No noAtual = primeiro;
+    while (noAtual != null) {
+        if (noAtual.getJogador().equals(jogador)) {
+            return true;
+        }
+        noAtual = noAtual.getProximo();
+    }
+    return false;
+}
+
    
 
 
