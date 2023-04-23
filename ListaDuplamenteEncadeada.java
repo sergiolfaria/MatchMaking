@@ -21,6 +21,9 @@ public class ListaDuplamenteEncadeada {
         public int getTamanho() {
         return tamanho;
     }
+    public int size() {
+    return tamanho;
+}
 
       public void setTamanho(int tamanho) {
          this.tamanho = tamanho;
