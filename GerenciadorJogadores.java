@@ -249,7 +249,17 @@ public class GerenciadorJogadores {
            if (jogador != null) {
                if (jogador.getRole().equals("carregador") || jogador.getRole().equals("tanker") || jogador.getRole().equals("suporte") || jogador.getRole().equals("mago")) {
                    double variacao = Math.abs((double) jogador.getPontuacaoHabilidade() / pontuacaoMedia - 1);
-                   if (variacao <= 0.15) {
+                   boolean jogadorJaSelecionado = false; // Cria variável booleana para verificar se o jogador já foi selecionado
+                   No noJogadoresSelecionados = jogadoresSelecionados.getPrimeiro();
+                   while (noJogadoresSelecionados != null) { // Percorre a lista de jogadores selecionados
+                       Jogador jogadorSelecionado = noJogadoresSelecionados.getJogador();
+                       if (jogadorSelecionado != null && jogadorSelecionado.equals(jogador)) { // Se o jogador já foi selecionado, define a variável booleana como true
+                           jogadorJaSelecionado = true;
+                           break;
+                       }
+                       noJogadoresSelecionados = noJogadoresSelecionados.getProximo();
+                   }
+                   if (!jogadorJaSelecionado && variacao <= 0.15) { // Adiciona o jogador à lista de jogadores selecionados somente se ele ainda não foi selecionado
                        jogadoresSelecionados.addLast(jogador);
                    }
                }
@@ -259,29 +269,26 @@ public class GerenciadorJogadores {
       for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
          Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
          if (jogadorSelecionado != null) {
-         System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
-      }
-   }
+         System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade:" + jogadorSelecionado.getPontuacaoHabilidade());
+}
+}
 
-   
-       // Adiciona jogadores restantes às equipes
-     Jogador jogador;
-      noAtual = jogadoresSelecionados.getPrimeiro().getProximo(); // Começa no primeiro elemento da lista
-      while (noAtual != null) { // Continua até o final da lista
-          jogador = noAtual.getJogador();
-          if (jogador != null) {
-              if (time1.getTamanho() < 3) {
-                  time1.addLast(jogador);
-              } else {
-                  time2.addLast(jogador);
-              }
-          }
-          noAtual = noAtual.getProximo(); // Avança para o próximo elemento
-      }
-       
-       // call the iniciar method with the appropriate arguments
-       iniciar(time1, time2);
-   }
-  
+// Adiciona jogadores restantes às equipes
+Jogador jogador;
+No noJogadoresSelecionados = jogadoresSelecionados.getPrimeiro();
+while (noJogadoresSelecionados != null) {
+    jogador = noJogadoresSelecionados.getJogador();
+    if (jogador != null) {
+        if (time1.getTamanho() < 3) {
+            time1.addLast(jogador);
+        } else {
+            time2.addLast(jogador);
+        }
+    }
+    noJogadoresSelecionados = noJogadoresSelecionados.getProximo();
+}
 
+// call the iniciar method with the appropriate arguments
+iniciar(time1, time2);
+}
 }
