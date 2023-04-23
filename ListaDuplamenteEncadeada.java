@@ -21,9 +21,6 @@ public class ListaDuplamenteEncadeada {
         public int getTamanho() {
         return tamanho;
     }
-    public int size() {
-    return tamanho;
-}
 
       public void setTamanho(int tamanho) {
          this.tamanho = tamanho;
@@ -69,6 +66,11 @@ public class ListaDuplamenteEncadeada {
     }
     return false;
 }
+   public void limpar() {
+        primeiro = null;
+        ultimo = null;
+        tamanho = 0;
+    }
     public void removerPorNome(String nome) {
         No noAtual = primeiro;
         while (noAtual != null) {
@@ -153,28 +155,76 @@ public class ListaDuplamenteEncadeada {
     return jogador;
 }
 
- public No get(int indice) {
-    if (indice < 0 || indice >= tamanho) {
-        throw new IndexOutOfBoundsException();
-    }
-    
-    No noAtual = primeiro.getProximo();
-    for (int i = 0; i < indice; i++) {
-        noAtual = noAtual.getProximo();
-    }
-    
-    return noAtual;
-}
-public boolean containsRole(String role) {
-    No noAtual = getPrimeiro();
-    while (noAtual != null) {
-        Jogador jogador = noAtual.getJogador();
-        if (jogador != null && jogador.getRole().equals(role)) {
-            return true;
+    public No get(int indice) {
+       if (indice < 0 || indice >= tamanho) {
+           throw new IndexOutOfBoundsException();
+       }
+       
+       No noAtual = primeiro.getProximo();
+       for (int i = 0; i < indice; i++) {
+           noAtual = noAtual.getProximo();
+       }
+       
+       return noAtual;
+   }
+   public boolean containsRole(String role) {
+       No noAtual = getPrimeiro();
+       while (noAtual != null) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador != null && jogador.getRole().equals(role)) {
+               return true;
+           }
+           noAtual = noAtual.getProximo();
+       }
+       return false;
+   }
+   public No buscar(Jogador jogador) {
+        No noAtual = primeiro;
+        while (noAtual != null) {
+            Jogador jogadorAtual = noAtual.getJogador();
+            if (jogadorAtual != null && jogadorAtual.getId() == jogador.getId()) {
+                return noAtual;
+            }
+            noAtual = noAtual.getProximo();
         }
-        noAtual = noAtual.getProximo();
+        return null;
     }
-    return false;
-}
+    public void remover(Jogador jogador) {
+        No noAtual = primeiro;
+        while (noAtual != null) {
+            Jogador jogadorAtual = noAtual.getJogador();
+            if (jogadorAtual != null && jogadorAtual.getId() == jogador.getId()) {
+                No anterior = noAtual.getAnterior();
+                No proximo = noAtual.getProximo();
 
+                if (anterior != null) {
+                    anterior.setProximo(proximo);
+                }
+                if (proximo != null) {
+                    proximo.setAnterior(anterior);
+                }
+
+                tamanho--;
+                return;
+            }
+            noAtual = noAtual.getProximo();
+        }
+    }
+    public int calcularPontuacaoTotalHabilidade() {
+       int totalHabilidade = 0;
+       No noAtual = getPrimeiro();
+       while (noAtual != null) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador != null) {
+               totalHabilidade += jogador.getPontuacaoHabilidade();
+           }
+           noAtual = noAtual.getProximo();
+       }
+       return totalHabilidade;
+   }
+   
+
+
+  
+   
 }
