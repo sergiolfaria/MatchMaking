@@ -74,32 +74,35 @@ public class GerenciadorJogadores {
     }
 
       public void carregarJogadores() {
-       try {
-           BufferedReader reader = new BufferedReader(new FileReader(arquivoJogadores));
-           String linha = null;
-           while ((linha = reader.readLine()) != null) {
-               String[] dados = linha.split(";");
-               if (dados.length != 4) {
-                   continue; // Ignora a linha se não tiver 4 valores
-               }
-               String nome = dados[0];
-               int id = Integer.parseInt(dados[1]);
-               String role = dados[2];
-               int pontuacaoHabilidade = Integer.parseInt(dados[3]);
-               Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
-               listaJogadores.addLast(jogador);
-           }
-           reader.close();
-       } catch (IOException e) {
-           System.out.println("Erro ao carregar jogadores: " + e.getMessage());
-       }
-   }
+         try {
+             BufferedReader reader = new BufferedReader(new FileReader(arquivoJogadores));
+             String linha = null;
+             while ((linha = reader.readLine()) != null) {
+                 String[] dados = linha.split(";");
+                 if (dados.length != 4) {
+                     continue; // Ignora a linha se não tiver 4 valores
+                 }
+                 String nome = dados[0];
+                 int id = Integer.parseInt(dados[1]);
+                 String role = dados[2];
+                 int pontuacaoHabilidade = Integer.parseInt(dados[3]);
+                 Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
+                 listaJogadores.addLast(jogador);
+                 System.out.println("Jogador carregado: " + nome + " - " + role + " - Habilidade: " + pontuacaoHabilidade); // Adiciona mensagem de confirmação
+             }
+             reader.close();
+         } catch (IOException e) {
+             System.out.println("Erro ao carregar jogadores: " + e.getMessage());
+         }
+      }
    public void iniciar() {
     ListaDuplamenteEncadeada listaEspera = new ListaDuplamenteEncadeada();
     No noAtual = listaJogadores.getPrimeiro();
     HashSet<String> rolesTime1 = new HashSet<>();
     HashSet<String> rolesTime2 = new HashSet<>();
     ListaDuplamenteEncadeada jogadoresEmPartida = new ListaDuplamenteEncadeada();
+    No noAtualEspera;
+    No noAtualJogadoresEmPartida;
 
     while (noAtual != null) {
         Jogador jogador = noAtual.getJogador();
@@ -143,8 +146,8 @@ public class GerenciadorJogadores {
         noAtualTime2 = noAtualTime2.getProximo();
     }
 
-    System.out.println("Jogadores em lista de espera:");
-    No noAtualEspera = listaEspera.getPrimeiro();
+       System.out.println("Jogadores em lista de espera:");
+    noAtualEspera = listaEspera.getPrimeiro();
     while (noAtualEspera != null) {
         Jogador jogador = noAtualEspera.getJogador();
         if (jogador != null) {
@@ -152,8 +155,9 @@ public class GerenciadorJogadores {
         }
         noAtualEspera = noAtualEspera.getProximo();
     }
+
     // Removendo jogadores em partida da lista de espera
-    No noAtualJogadoresEmPartida = jogadoresEmPartida.getPrimeiro();
+    noAtualJogadoresEmPartida = jogadoresEmPartida.getPrimeiro();
     while (noAtualJogadoresEmPartida != null) {
         Jogador jogadorEmPartida = noAtualJogadoresEmPartida.getJogador();
         if (jogadorEmPartida != null) {
@@ -162,51 +166,65 @@ public class GerenciadorJogadores {
         noAtualJogadoresEmPartida = noAtualJogadoresEmPartida.getProximo();
     }
 
+    // Exibindo a lista de espera atualizada
+    System.out.println("Jogadores em lista de espera atualizada:");
+    noAtualEspera = listaEspera.getPrimeiro();
+    while (noAtualEspera != null) {
+        Jogador jogador = noAtualEspera.getJogador();
+        if (jogador != null) {
+            System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+        }
+        noAtualEspera = noAtualEspera.getProximo();
+    }
+    salvarPartida(time1, time2, pontuacaoTime1, pontuacaoTime2); // Adicione esta linha
+    
+    
     jogadoresEmPartida = new ListaDuplamenteEncadeada();
     time1 = new ListaDuplamenteEncadeada();
     time2 = new ListaDuplamenteEncadeada();
     pontuacaoTime1 = 0;
     pontuacaoTime2 = 0;
-}
-     public void salvarPartida(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, int pontuacaoTime1, int pontuacaoTime2) {
-       try {
-           // Cria um objeto BufferedWriter para escrever no arquivo "partida.txt"
-           BufferedWriter writer = new BufferedWriter(new FileWriter("partida.txt", true));
-   
-           // Escreve a pontuação do time 1 e a lista de jogadores
-           writer.write("Time 1 - Habilidade " + pontuacaoTime1 + ":");
-           writer.newLine();
-           No noAtualTime1 = time1.getPrimeiro();
-           while (noAtualTime1 != null) {
-               Jogador jogador = noAtualTime1.getJogador();
-               if (jogador != null) {
-                   writer.write(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-                   writer.newLine();
-               }
-               noAtualTime1 = noAtualTime1.getProximo();
-           }
-   
-           // Escreve a pontuação do time 2 e a lista de jogadores
-           writer.write("Time 2 - Habilidade " + pontuacaoTime2 + ":");
-           writer.newLine();
-           No noAtualTime2 = time2.getPrimeiro();
-           while (noAtualTime2 != null) {
-               Jogador jogador = noAtualTime2.getJogador();
-               if (jogador != null) {
-                   writer.write(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-                   writer.newLine();
-               }
-               noAtualTime2 = noAtualTime2.getProximo();
-           }
-   
-           // Escreve a quebra de linha no final para separar as partidas
-           writer.newLine();
-   
-           writer.close();
-       } catch (IOException e) {
-           System.out.println("Erro ao salvar partida: " + e.getMessage());
-       }
-   }
+}     
+      
+      public void salvarPartida(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, int pontuacaoTime1, int pontuacaoTime2) {
+          try {
+              // Cria um objeto BufferedWriter para escrever no arquivo "partida.txt"
+              BufferedWriter writer = new BufferedWriter(new FileWriter("partida.txt", true));
+      
+              // Escreve a pontuação do time 1 e a lista de jogadores
+              writer.write("Time 1 - Habilidade " + pontuacaoTime1 + ":");
+              writer.newLine();
+              No noAtualTime1 = time1.getPrimeiro();
+              while (noAtualTime1 != null) {
+                  Jogador jogador = noAtualTime1.getJogador();
+                  if (jogador != null) {
+                      writer.write(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+                      writer.newLine();
+                  }
+                  noAtualTime1 = noAtualTime1.getProximo();
+              }
+      
+              // Escreve a pontuação do time 2 e a lista de jogadores
+              writer.write("Time 2 - Habilidade " + pontuacaoTime2 + ":");
+              writer.newLine();
+              No noAtualTime2 = time2.getPrimeiro();
+              while (noAtualTime2 != null) {
+                  Jogador jogador = noAtualTime2.getJogador();
+                  if (jogador != null) {
+                      writer.write(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+                      writer.newLine();
+                  }
+                  noAtualTime2 = noAtualTime2.getProximo();
+              }
+      
+              // Escreve a quebra de linha no final para separar as partidas
+              writer.newLine();
+      
+              writer.close();
+          } catch (IOException e) {
+              System.out.println("Erro ao salvar partida: " + e.getMessage());
+          }
+      }
       public void selecionarJogadoresRolePontos() {
        ListaDuplamenteEncadeada jogadoresSelecionados = new ListaDuplamenteEncadeada();
        No noAtual = listaJogadores.getPrimeiro();
