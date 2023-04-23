@@ -30,18 +30,23 @@ public class ListaDuplamenteEncadeada {
       public ListaDuplamenteEncadeada(Jogador jogador) {
           this();
        }
-       public void addLast(Jogador jogador) {
-       No novoNo = new No(jogador);
-       if (isEmpty()) {
-           primeiro = novoNo;
-           ultimo = novoNo;
-       } else {
-           ultimo.setProximo(novoNo);
-           novoNo.setAnterior(ultimo);
-           ultimo = novoNo;
-       }
-       tamanho++;
-       }
+      public void addLast(Jogador jogador) {
+        No novoNo = new No(jogador);
+
+        if (isEmpty()) {
+            primeiro.setProximo(novoNo);
+            novoNo.setAnterior(primeiro);
+            novoNo.setProximo(ultimo);
+            ultimo.setAnterior(novoNo);
+        } else {
+            ultimo.getAnterior().setProximo(novoNo);
+            novoNo.setAnterior(ultimo.getAnterior());
+            novoNo.setProximo(ultimo);
+            ultimo.setAnterior(novoNo);
+        }
+        tamanho++;
+    }
+
 
     public void addFirst(Jogador jogador){
       No novoNo = new No(jogador);
@@ -72,28 +77,27 @@ public class ListaDuplamenteEncadeada {
         tamanho = 0;
     }
     public void removerPorNome(String nome) {
-        No noAtual = primeiro;
-        while (noAtual != null) {
-            Jogador jogador = noAtual.getJogador();
-            if (jogador.getNome().equals(nome)) {
-                No anterior = noAtual.getAnterior();
-                No proximo = noAtual.getProximo();
-                if (anterior == null) {
-                    primeiro = proximo;
-                } else {
-                    anterior.setProximo(proximo);
-                }
-                if (proximo == null) {
-                    ultimo = anterior;
-                } else {
-                    proximo.setAnterior(anterior);
-                }
-                tamanho--;
-                return;
-            }
-            noAtual = noAtual.getProximo();
-        }
-    }
+      No noAtual = primeiro.getProximo();
+
+       while (noAtual != null && noAtual != ultimo) {
+           Jogador jogador = noAtual.getJogador();
+           if (jogador.getNome().equals(nome)) {
+               No anterior = noAtual.getAnterior();
+               No proximo = noAtual.getProximo();
+   
+               if (anterior != null) {
+                   anterior.setProximo(proximo);
+               }
+               if (proximo != null) {
+                   proximo.setAnterior(anterior);
+               }
+   
+               tamanho--;
+               return;
+           }
+           noAtual = noAtual.getProximo();
+       }
+   }
 
     public void removerPorId(int id) {
         No noAtual = primeiro;
@@ -178,18 +182,30 @@ public class ListaDuplamenteEncadeada {
        }
        return false;
    }
-   public No buscar(Jogador jogador) {
-        No noAtual = primeiro;
-        while (noAtual != null) {
-            Jogador jogadorAtual = noAtual.getJogador();
-            if (jogadorAtual != null && jogadorAtual.getId() == jogador.getId()) {
-                return noAtual;
-            }
-            noAtual = noAtual.getProximo();
-        }
-        return null;
+   private No proximoNoNaoNulo(No noAtual) {
+    No proximoNo = noAtual.getProximo();
+    while (proximoNo != null && proximoNo.getJogador() == null) {
+        proximoNo = proximoNo.getProximo();
     }
-    public void remover(Jogador jogador) {
+    return proximoNo;
+}
+
+   public No buscar(Jogador jogador) {
+       if (jogador == null) {
+           return null;
+       }
+   
+       No noAtual = proximoNoNaoNulo(primeiro);
+       while (noAtual != null) {
+           Jogador jogadorAtual = noAtual.getJogador();
+           if (jogadorAtual.getId() == jogador.getId()) {
+               return noAtual;
+           }
+           noAtual = proximoNoNaoNulo(noAtual);
+       }
+       return null;
+   }
+  public void remover(Jogador jogador) {
         No noAtual = primeiro;
         while (noAtual != null) {
             Jogador jogadorAtual = noAtual.getJogador();
