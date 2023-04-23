@@ -259,10 +259,16 @@ public class GerenciadorJogadores {
            }
            noAtual = noAtual.getProximo();
        }
-       for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
-           Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
-           System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
-       }
+      for (int i = 0; i < 6 && jogadoresSelecionados.getTamanho() > 0; i++) {
+          Jogador jogadorSelecionado = jogadoresSelecionados.getRemovePrimeiro();
+      
+          if (jogadorSelecionado != null) {
+              System.out.println("Jogador selecionado: " + jogadorSelecionado.getNome() + " - " + jogadorSelecionado.getRole() + " - Habilidade: " + jogadorSelecionado.getPontuacaoHabilidade());
+          } else {
+              System.out.println("Jogador selecionado é nulo.");
+          }
+      }
+
    
        // Adiciona jogadores restantes às equipes
      Jogador jogador;
