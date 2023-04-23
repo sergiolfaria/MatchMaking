@@ -162,5 +162,16 @@ public class ListaDuplamenteEncadeada {
     
     return noAtual;
 }
+public boolean containsRole(String role) {
+    No noAtual = getPrimeiro();
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        if (jogador != null && jogador.getRole().equals(role)) {
+            return true;
+        }
+        noAtual = noAtual.getProximo();
+    }
+    return false;
+}
 
 }
