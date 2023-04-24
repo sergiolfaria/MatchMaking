@@ -40,23 +40,42 @@ public class GerenciadorJogadores {
        System.out.println("Jogador adicionado com sucesso!");
    }
 
-   public void removerJogador() {
-           String nome = Utils.lerTexto("Informe o nome do jogador que deseja remover: ");
-       
-           Jogador jogador = listaJogadores.removerPorNome(nome);
-           if (jogador != null) {
-               if (jogadoresParaRemoverIndex < jogadoresParaRemover.length) {
-                   jogadoresParaRemover[jogadoresParaRemoverIndex++] = jogador; // Adiciona jogador ao array
-                   listaEspera.removerJogador(jogador);
-                   salvarJogadores();
-                   System.out.println("Jogador removido com sucesso!");
-               } else {
-                   System.out.println("Limite de jogadores removidos atingido.");
-               }
-           } else {
-               System.out.println("Jogador não encontrado na lista.");
-           }
-       }
+  public void removerJogadoresDosTimes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
+    No noAtualTime1 = time1.getPrimeiro();
+    while (noAtualTime1 != null) {
+        Jogador jogadorTime1 = noAtualTime1.getJogador();
+        if (jogadorTime1 != null) {
+            No noAtualEspera = listaEspera.getPrimeiro();
+            while (noAtualEspera != null) {
+                Jogador jogadorEspera = noAtualEspera.getJogador();
+                if (jogadorEspera != null && jogadorEspera.getNome().equals(jogadorTime1.getNome()) && jogadorEspera.getPontuacaoHabilidade() == jogadorTime1.getPontuacaoHabilidade()) {
+                    listaEspera.removerJogador(jogadorEspera);
+                    break;
+                }
+                noAtualEspera = noAtualEspera.getProximo();
+            }
+        }
+        noAtualTime1 = noAtualTime1.getProximo();
+    }
+
+    No noAtualTime2 = time2.getPrimeiro();
+    while (noAtualTime2 != null) {
+        Jogador jogadorTime2 = noAtualTime2.getJogador();
+        if (jogadorTime2 != null) {
+            No noAtualEspera = listaEspera.getPrimeiro();
+            while (noAtualEspera != null) {
+                Jogador jogadorEspera = noAtualEspera.getJogador();
+                if (jogadorEspera != null && jogadorEspera.getNome().equals(jogadorTime2.getNome()) && jogadorEspera.getPontuacaoHabilidade() == jogadorTime2.getPontuacaoHabilidade()) {
+                    listaEspera.removerJogador(jogadorEspera);
+                    break;
+                }
+                noAtualEspera = noAtualEspera.getProximo();
+            }
+        }
+        noAtualTime2 = noAtualTime2.getProximo();
+    }
+}
+
    
        public void listarFilaJogadores() {
         System.out.println("Fila de jogadores: ");
@@ -149,13 +168,22 @@ public class GerenciadorJogadores {
           }
       }
       
-public void adicionarJogadorParaRemover(Jogador jogador) {
-    if (jogadoresParaRemoverIndex < jogadoresParaRemover.length) {
-        jogadoresParaRemover[jogadoresParaRemoverIndex++] = jogador;
-    } else {
-        System.out.println("Limite de jogadores removidos atingido.");
-    }
-}
+      public void adicionarJogadorParaRemover(Jogador jogador) {
+          if (jogadoresParaRemoverIndex < jogadoresParaRemover.length) {
+              jogadoresParaRemover[jogadoresParaRemoverIndex++] = jogador;
+          } else {
+              System.out.println("Limite de jogadores removidos atingido.");
+          }
+      }
+      public void exibirJogadoresRemovidos() {
+          System.out.println("Fila de removidos: ");
+          for (int i = 0; i < jogadoresParaRemoverIndex; i++) {
+              Jogador jogador = jogadoresParaRemover[i];
+              if (jogador != null) {
+                  System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
+              }
+          }
+      }
 
 
 
@@ -165,7 +193,7 @@ public void adicionarJogadorParaRemover(Jogador jogador) {
 
       public void iniciar(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2) {
           distribuirJogadores(time1, time2, listaEspera);
-        
+          removerJogadoresDosTimes(time1, time2, listaEspera);
           exibirInformacoes(time1, time2, listaEspera);
       
           // Garantir que os times tenham 3 jogadores cada
@@ -185,9 +213,7 @@ public void adicionarJogadorParaRemover(Jogador jogador) {
               Jogador jogador = noAtualTime1.getJogador();
               if (jogador != null) {
                   System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
-              } else {
-                  System.out.println("Vazio");
-              }
+              } 
               noAtualTime1 = noAtualTime1.getProximo();
           }
         
@@ -201,14 +227,16 @@ public void adicionarJogadorParaRemover(Jogador jogador) {
               noAtualTime2 = noAtualTime2.getProximo();
           }
       
-          // Exibir informações da Lista de Espera
-          System.out.println("Jogadores em espera:");
-          listarFilaJogadores();
-      
-          // Exibir informações da Lista de removidos
-          System.out.println("Jogadores removidos:");
-          jogadoresParaRemover();
+         
+          
       }
+      public void limparTimes() {
+          time1.limpar();
+          time2.limpar();
+          pontuacaoTime1 = 0;
+          pontuacaoTime2 = 0;
+      }
+
    
          
  
@@ -245,11 +273,12 @@ public void adicionarJogadorParaRemover(Jogador jogador) {
    
            // Escreve a quebra de linha no final para separar as partidas
            writer.newLine();
-   
+      
            writer.close();
        } catch (IOException e) {
            System.out.println("Erro ao salvar partida: " + e.getMessage());
        }
+       limparTimes();
    }
   public void selecionarJogadoresRolePontos() {
     No noAtual = listaEspera.getPrimeiro();

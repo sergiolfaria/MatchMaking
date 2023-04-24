@@ -176,22 +176,27 @@ public class ListaDuplamenteEncadeada {
     }
    }
     public Jogador getRemovePrimeiro() {
-    if (isEmpty()) {
-        return null;
-    }
-    No proximoNo = primeiro.getProximo();
-    if (proximoNo == null) {
-        return null;
-    }
-    Jogador jogador = proximoNo.getJogador();
-    No proximoDoProximo = proximoNo.getProximo();
-    if (proximoDoProximo != null) {
-        proximoDoProximo.setAnterior(primeiro);
-    }
-    primeiro.setProximo(proximoDoProximo);
-    tamanho--;
-    return jogador;
-}
+       if (isEmpty()) {
+           return null;
+       }
+       No proximoNo = primeiro.getProximo();
+       if (proximoNo == null) {
+           return null;
+       }
+       Jogador jogador = proximoNo.getJogador();
+       No proximoDoProximo = proximoNo.getProximo();
+       if (proximoDoProximo != null) {
+           proximoDoProximo.setAnterior(primeiro);
+       }
+       primeiro.setProximo(proximoDoProximo);
+       tamanho--;
+       return jogador;
+   }
+     public void limpar() {
+       primeiro.setProximo(ultimo);
+       ultimo.setAnterior(primeiro);
+       tamanho = 0;
+   }
 
     public No get(int indice) {
        if (indice < 0 || indice >= tamanho) {
