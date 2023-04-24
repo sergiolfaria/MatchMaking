@@ -280,7 +280,7 @@ public class GerenciadorJogadores {
        }
        limparTimes();
    }
-  public void selecionarJogadoresRolePontos() {
+  public void iniciarPartida() {
     No noAtual = listaEspera.getPrimeiro();
 
     while (noAtual != null) {
