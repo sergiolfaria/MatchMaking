@@ -15,6 +15,7 @@ public class GerenciadorJogadores {
     ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
     ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
     ListaDuplamenteEncadeada listaEspera = new ListaDuplamenteEncadeada();
+    ListaDuplamenteEncadeada jogadoresParaRemover = new ListaDuplamenteEncadeada();
 
     public GerenciadorJogadores(Jogador jogador) {
         listaJogadores = new ListaDuplamenteEncadeada(jogador);
@@ -157,13 +158,10 @@ public class GerenciadorJogadores {
 }
 
    public void iniciar(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2) {
-      
-       ListaDuplamenteEncadeada jogadoresParaRemover = new ListaDuplamenteEncadeada();
-   
        distribuirJogadores(time1, time2, listaEspera, jogadoresParaRemover);
        removerJogadoresNaoAlocados();
-       //removerJogadoresSelecionados(jogadoresParaRemover);
        exibirInformacoes(time1, time2, listaEspera);
+   
        // Garantir que os times tenham 3 jogadores cada
        if (time1.getTamanho() < 3 || time2.getTamanho() < 3) {
            System.out.println("Não foi possível criar times com 3 jogadores cada.");
@@ -172,11 +170,11 @@ public class GerenciadorJogadores {
    
        salvarPartida(time1, time2);
        System.out.println("Partida salva com sucesso!");
-      
+   
        limparJogadoresComTime();
        limparTimes();
-       
    }
+
       public void exibirInformacoes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
           // Exibir informações do Time 1
           System.out.println("Time 1 - Habilidade " + pontuacaoTime1 + ":");
