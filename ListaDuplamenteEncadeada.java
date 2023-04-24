@@ -133,7 +133,6 @@ public class ListaDuplamenteEncadeada {
    
        return null;
    }
-
     public void removerPorId(int id) {
         No noAtual = primeiro;
         while (noAtual != null) {

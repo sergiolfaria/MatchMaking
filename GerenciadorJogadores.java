@@ -15,7 +15,8 @@ public class GerenciadorJogadores {
     ListaDuplamenteEncadeada time1 = new ListaDuplamenteEncadeada();
     ListaDuplamenteEncadeada time2 = new ListaDuplamenteEncadeada();
     ListaDuplamenteEncadeada listaEspera = new ListaDuplamenteEncadeada();
-    ListaDuplamenteEncadeada jogadoresParaRemover = new ListaDuplamenteEncadeada();
+    Jogador[] jogadoresParaRemover = new Jogador[6]; // Inicializa o array para armazenar jogadores removidos
+    int jogadoresParaRemoverIndex = 0;
 
     public GerenciadorJogadores(Jogador jogador) {
         listaJogadores = new ListaDuplamenteEncadeada(jogador);
@@ -39,20 +40,23 @@ public class GerenciadorJogadores {
        System.out.println("Jogador adicionado com sucesso!");
    }
 
-
-      public void removerJogador() {
-          String nome = Utils.lerTexto("Informe o nome do jogador que deseja remover: ");
-      
-          Jogador jogador = listaJogadores.removerPorNome(nome);
-          if (jogador != null) {
-              jogadoresParaRemover.addLast(jogador);
-              listaEspera.removerJogador(jogador);
-              salvarJogadores();
-              System.out.println("Jogador removido com sucesso!");
-          } else {
-              System.out.println("Jogador não encontrado na lista.");
-          }
-      }
+   public void removerJogador() {
+           String nome = Utils.lerTexto("Informe o nome do jogador que deseja remover: ");
+       
+           Jogador jogador = listaJogadores.removerPorNome(nome);
+           if (jogador != null) {
+               if (jogadoresParaRemoverIndex < jogadoresParaRemover.length) {
+                   jogadoresParaRemover[jogadoresParaRemoverIndex++] = jogador; // Adiciona jogador ao array
+                   listaEspera.removerJogador(jogador);
+                   salvarJogadores();
+                   System.out.println("Jogador removido com sucesso!");
+               } else {
+                   System.out.println("Limite de jogadores removidos atingido.");
+               }
+           } else {
+               System.out.println("Jogador não encontrado na lista.");
+           }
+       }
    
        public void listarFilaJogadores() {
         System.out.println("Fila de jogadores: ");
@@ -67,13 +71,11 @@ public class GerenciadorJogadores {
     }
     public void jogadoresParaRemover() {
         System.out.println("Fila de removidos: ");
-        No noAtual = jogadoresParaRemover.getPrimeiro();
-        while (noAtual != null) {
-            Jogador jogador = noAtual.getJogador();
+        for (int i = 0; i < jogadoresParaRemoverIndex; i++) {
+            Jogador jogador = jogadoresParaRemover[i];
             if (jogador != null) {
                 System.out.println(jogador.getNome() + " - " + jogador.getRole() + " - Habilidade: " + jogador.getPontuacaoHabilidade());
             }
-            noAtual = noAtual.getProximo();
         }
     }
 
@@ -125,33 +127,46 @@ public class GerenciadorJogadores {
        return time.getTamanho() < 3 && !time.containsRole(role);
    }
       
-     public void distribuirJogadores(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera, ListaDuplamenteEncadeada jogadoresParaRemover) {
-       No noAtual = listaEspera.getPrimeiro();
-       while (noAtual != null) {
-           Jogador jogador = noAtual.getJogador();
-           if (jogador != null) {
-               String role = jogador.getRole();
-               if (podeAdicionarJogador(time1, role)) {
-                   time1.addLast(jogador);
-                   pontuacaoTime1 += jogador.getPontuacaoHabilidade();
-                   jogadoresParaRemover.addLast(jogador);
-                   listaEspera.removerJogador(jogador);
-               } else if (podeAdicionarJogador(time2, role)) {
-                   time2.addLast(jogador);
-                   pontuacaoTime2 += jogador.getPontuacaoHabilidade();
-                   jogadoresParaRemover.addLast(jogador);
-                   listaEspera.removerJogador(jogador);
-               }
-           }
-           noAtual = noAtual.getProximo();
-       }
-   }
+     public void distribuirJogadores(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
+          No noAtual = listaEspera.getPrimeiro();
+          while (noAtual != null) {
+              Jogador jogador = noAtual.getJogador();
+              if (jogador != null) {
+                  String role = jogador.getRole();
+                  if (podeAdicionarJogador(time1, role)) {
+                      time1.addLast(jogador);
+                      pontuacaoTime1 += jogador.getPontuacaoHabilidade();
+                      adicionarJogadorParaRemover(jogador); // Adiciona jogador ao array
+                      listaEspera.removerJogador(jogador);
+                  } else if (podeAdicionarJogador(time2, role)) {
+                      time2.addLast(jogador);
+                      pontuacaoTime2 += jogador.getPontuacaoHabilidade();
+                      adicionarJogadorParaRemover(jogador); // Adiciona jogador ao array
+                      listaEspera.removerJogador(jogador);
+                  }
+              }
+              noAtual = noAtual.getProximo();
+          }
+      }
+      
+public void adicionarJogadorParaRemover(Jogador jogador) {
+    if (jogadoresParaRemoverIndex < jogadoresParaRemover.length) {
+        jogadoresParaRemover[jogadoresParaRemoverIndex++] = jogador;
+    } else {
+        System.out.println("Limite de jogadores removidos atingido.");
+    }
+}
+
+
+
+
+
 
 
       public void iniciar(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2) {
-          distribuirJogadores(time1, time2, listaEspera, jogadoresParaRemover);
+          distribuirJogadores(time1, time2, listaEspera);
         
-          exibirInformacoes(time1, time2, listaEspera, jogadoresParaRemover);
+          exibirInformacoes(time1, time2, listaEspera);
       
           // Garantir que os times tenham 3 jogadores cada
           if (time1.getTamanho() < 3 || time2.getTamanho() < 3) {
@@ -162,7 +177,7 @@ public class GerenciadorJogadores {
           salvarPartida(time1, time2);
           System.out.println("Partida salva com sucesso!");
       }
-      public void exibirInformacoes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera, ListaDuplamenteEncadeada jogadoresParaRemover) {
+      public void exibirInformacoes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
           // Exibir informações do Time 1
           System.out.println("Time 1 - Habilidade " + pontuacaoTime1 + ":");
           No noAtualTime1 = time1.getPrimeiro();
