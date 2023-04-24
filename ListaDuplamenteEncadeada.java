@@ -287,7 +287,22 @@ public class ListaDuplamenteEncadeada {
     }
     return false;
 }
-   
+public Jogador getJogadorPorNome(String nome) {
+    if (nome == null || nome.isEmpty()) {
+        return null;
+    }
+
+    No noAtual = getPrimeiro();
+    while (noAtual != null) {
+        Jogador jogador = noAtual.getJogador();
+        if (jogador != null && jogador.getNome().equalsIgnoreCase(nome)) {
+            return jogador;
+        }
+        noAtual = noAtual.getProximo();
+    }
+
+    return null;
+}  
 
 
   
