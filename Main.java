@@ -1,7 +1,10 @@
 import java.util.Scanner;
+import java.io.File;
 class Main{
 
     public static void main(String[] args) {
+        File file = new File("partida.txt");
+        boolean result = file.delete();
         Jogador jogador = new Jogador(0,"","",0);
         GerenciadorJogadores gerenciador = new GerenciadorJogadores(jogador);
         Scanner scanner = new Scanner(System.in);
