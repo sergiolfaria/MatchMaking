@@ -309,22 +309,21 @@ public class GerenciadorJogadores {
            return false;
        }
    
-       int pontuacaoTotalTime1 = 0;
-       int pontuacaoTotalTime2 = 0;
+       
        No noAtual = time1.getPrimeiro().getProximo();
        while (noAtual != null && noAtual.getJogador() != null) {
            Jogador jogador = noAtual.getJogador();
-           pontuacaoTotalTime1 += jogador.getPontuacaoHabilidade();
+           pontuacaoTime1 += jogador.getPontuacaoHabilidade();
            noAtual = noAtual.getProximo();
        }
        noAtual = time2.getPrimeiro().getProximo();
        while (noAtual != null && noAtual.getJogador() != null) {
            Jogador jogador = noAtual.getJogador();
-           pontuacaoTotalTime2 += jogador.getPontuacaoHabilidade();
+           pontuacaoTime2 += jogador.getPontuacaoHabilidade();
            noAtual = noAtual.getProximo();
        }
    
-       double diferencaPercentual = Math.abs((double) (pontuacaoTotalTime1 - pontuacaoTotalTime2) / ((pontuacaoTotalTime1 + pontuacaoTotalTime2) / 2)) * 100;
+       double diferencaPercentual = Math.abs((double) (pontuacaoTime1 - pontuacaoTime2) / ((pontuacaoTime1 + pontuacaoTime2) / 2)) * 100;
    
        return diferencaPercentual <= 15;
    }
