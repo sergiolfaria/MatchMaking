@@ -327,5 +327,35 @@ public class GerenciadorJogadores {
    
        return diferencaPercentual <= 15;
    }
+   public void listarPartidasEmAndamento() {
+    try {
+        BufferedReader reader = new BufferedReader(new FileReader("partida.txt"));
+        String linha;
+        boolean temPartidas = false;
+
+        while ((linha = reader.readLine()) != null) {
+            if (linha.startsWith("Time")) {
+                if (temPartidas) {
+                    System.out.println("-----------------Partida-----------------");
+                }
+                System.out.println(linha);
+                while ((linha = reader.readLine()) != null && !linha.isEmpty()) {
+                    System.out.println(linha);
+                }
+                temPartidas = true;
+            }
+        }
+
+        if (!temPartidas) {
+            System.out.println("Não há partidas em andamento.");
+        }
+
+        reader.close();
+    } catch (IOException e) {
+        System.out.println("Erro ao ler arquivo de partidas: " + e.getMessage());
+    }
+}
+
+
 
 }

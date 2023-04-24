@@ -32,7 +32,7 @@ class Main{
                     gerenciador.iniciarPartida();
                     break;
                 case 5:
-                    gerenciador.
+                    gerenciador.listarPartidasEmAndamento();
                     break;
                 case 0:
                     System.out.println("Encerrando o programa...");
