@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class GerenciadorJogadores {
+public class GerenciadorMatchmaking {
    private ListaDuplamenteEncadeada listaJogadores;
    private String arquivoJogadores = "jogadores.txt";
    int pontuacaoTime1;
@@ -18,7 +18,7 @@ public class GerenciadorJogadores {
    Jogador[] jogadoresParaRemover = new Jogador[6]; 
    int jogadoresParaRemoverIndex = 0;
 
-   public GerenciadorJogadores(Jogador jogador) {
+   public GerenciadorMatchmaking(Jogador jogador) {
       listaJogadores = new ListaDuplamenteEncadeada(jogador);
    }
    public void adicionarJogadorNaEspera(Jogador jogador) {
@@ -27,16 +27,40 @@ public class GerenciadorJogadores {
    public void adicionarJogador() {
       String nome = Utils.lerTexto("Informe o nome do jogador: ");
       int id = Utils.lerInt("Informe o ID do jogador: ");
-      String role = Utils.lerTexto("Informe a role do jogador: ");
-      int pontuacaoHabilidade = Utils.lerInt("Informe a pontuação de habilidade do jogador: ");
-   
+      String role = "";
+      int pontuacaoHabilidade = 0;
+      boolean entradaValida = false;
+
+      // Loop para verificar entrada da variável role
+      while (!entradaValida) {
+          role = Utils.lerTexto("Informe a role do jogador (carregador, tanker, suporte ou mago): ").toLowerCase();
+          if (role.equals("carregador") || role.equals("tanker") || role.equals("suporte") || role.equals("mago")) {
+              entradaValida = true;
+          } else {
+              System.out.println("Entrada inválida. Por favor, tente novamente.");
+          }
+      }
+
+      entradaValida = false;
+
+      // Loop para verificar entrada da variável pontuacaoHabilidade
+      while (!entradaValida) {
+          try {
+              pontuacaoHabilidade = Utils.lerInt("Informe a pontuação de habilidade do jogador: ");
+              entradaValida = true;
+          } catch (NumberFormatException e) {
+              System.out.println("Entrada inválida. Por favor, informe um número inteiro.");
+          }
+      }
+
       Jogador jogador = new Jogador(id, nome, role, pontuacaoHabilidade);
-   
+
       listaJogadores.addLast(jogador);
       adicionarJogadorNaEspera(jogador); // Adiciona jogador à listaEspera
       salvarJogadores();
       System.out.println("Jogador adicionado com sucesso!");
    }
+
    public void removerJogadoresDosTimes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2, ListaDuplamenteEncadeada listaEspera) {
       No noAtualTime1 = time1.getPrimeiro();
       while (noAtualTime1 != null) {
@@ -205,8 +229,8 @@ public class GerenciadorJogadores {
       }
    }
    public void limparTimes() {
-      time1.limpar();
-      time2.limpar();
+      time1.limparLista();
+      time2.limparLista();
       pontuacaoTime1 = 0;
       pontuacaoTime2 = 0;
    }
@@ -347,81 +371,5 @@ public class GerenciadorJogadores {
       } catch (IOException e) {
          System.out.println("Erro ao salvar times: " + e.getMessage());
       }  
-   }
-   public void receberTimes(ListaDuplamenteEncadeada time1, ListaDuplamenteEncadeada time2) {
-      System.out.println("Times da partida:");
-      System.out.println("Time 1:");
-      No noAtualTime1 = time1.getPrimeiro();
-      while (noAtualTime1 != null) {
-        Jogador jogador = noAtualTime1.getJogador();
-        if (jogador != null) {
-            System.out.println(jogador.getNome());
-        }
-        noAtualTime1 = noAtualTime1.getProximo();
-    }
-    System.out.println("Time 2:");
-    No noAtualTime2 = time2.getPrimeiro();
-    while (noAtualTime2 != null) {
-        Jogador jogador = noAtualTime2.getJogador();
-        if (jogador != null) {
-            System.out.println(jogador.getNome());
-        }
-        noAtualTime2 = noAtualTime2.getProximo();
-    }
-}
-
-public void carregarTimes() {
-    try {
-        receberTimes(time1, time2);
-        BufferedReader reader = new BufferedReader(new FileReader("partidas.txt"));
-        String linha;
-        while ((linha = reader.readLine()) != null) {
-            if (linha.equals("Time 1:")) {
-                linha = reader.readLine();
-                while (!linha.equals("Time 2:")) {
-                    String[] dados = linha.split(" - ");
-                    String nome = dados[0];
-                    time1.addLast(listaJogadores.getJogadorPorNome(nome));
-                    linha = reader.readLine();
-                }
-            }
-            if (linha.equals("Time 2:")) {
-                linha = reader.readLine();
-                while (!linha.equals("")) {
-                    String[] dados = linha.split(" - ");
-                    String nome = dados[0];
-                    time2.addLast(listaJogadores.getJogadorPorNome(nome));
-                    linha = reader.readLine();
-                }
-            }
-        }
-        reader.close();
-    } catch (IOException e) {
-        System.out.println("Erro ao carregar times: " + e.getMessage());
-    }
-}
-
-public void exibirTimes() {
-    System.out.println("Times salvos:");
-    System.out.println("Time 1:");
-    No noAtualTime1 = time1.getPrimeiro();
-    while (noAtualTime1 != null) {
-        Jogador jogador = noAtualTime1.getJogador();
-        if (jogador != null) {
-            System.out.println(jogador.getNome());
-        }
-        noAtualTime1 = noAtualTime1.getProximo();
-    }
-    System.out.println("Time 2:");
-    No noAtualTime2 = time2.getPrimeiro();
-    while (noAtualTime2 != null) {
-        Jogador jogador = noAtualTime2.getJogador();
-        if (jogador != null) {
-            System.out.println(jogador.getNome());
-        }
-        noAtualTime2 = noAtualTime2.getProximo();
-    }
-}
-
-   
+   }  
 }
