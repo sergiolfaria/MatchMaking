@@ -71,32 +71,67 @@ public class ListaDuplamenteEncadeada {
     }
     return false;
 }
-   public void limpar() {
-        primeiro = null;
-        ultimo = null;
-        tamanho = 0;
+    public void removerJogador(Jogador jogador) {
+    No noAtual = primeiro;
+    while (noAtual != null) {
+        Jogador j = noAtual.getJogador();
+        if (j != null && j.equals(jogador)) {
+            if (noAtual == primeiro) {
+                primeiro = noAtual.getProximo();
+                if (primeiro != null) {
+                    primeiro.setAnterior(null);
+                }
+            } else if (noAtual == ultimo) {
+                ultimo = noAtual.getAnterior();
+                if (ultimo != null) {
+                    ultimo.setProximo(null);
+                }
+            } else {
+                noAtual.getAnterior().setProximo(noAtual.getProximo());
+                noAtual.getProximo().setAnterior(noAtual.getAnterior());
+            }
+            tamanho--;
+            break;
+        }
+        noAtual = noAtual.getProximo();
     }
-    public void removerPorNome(String nome) {
-      No noAtual = primeiro.getProximo();
+}
 
-       while (noAtual != null && noAtual != ultimo) {
+    
+    
+    public Jogador removerPorNome(String nome) {
+       if (primeiro == null) {
+           return null;
+       }
+   
+       No noAtual = primeiro;
+   
+       while (noAtual != null) {
            Jogador jogador = noAtual.getJogador();
-           if (jogador.getNome().equals(nome)) {
-               No anterior = noAtual.getAnterior();
-               No proximo = noAtual.getProximo();
    
-               if (anterior != null) {
-                   anterior.setProximo(proximo);
+           if (jogador.getNome().equalsIgnoreCase(nome)) {
+               if (noAtual == primeiro) {
+                   primeiro = noAtual.getProximo();
+                   if (primeiro != null) {
+                       primeiro.setAnterior(null);
+                   }
+               } else if (noAtual == ultimo) {
+                   ultimo = noAtual.getAnterior();
+                   if (ultimo != null) {
+                       ultimo.setProximo(null);
+                   }
+               } else {
+                   noAtual.getAnterior().setProximo(noAtual.getProximo());
+                   noAtual.getProximo().setAnterior(noAtual.getAnterior());
                }
-               if (proximo != null) {
-                   proximo.setAnterior(anterior);
-               }
-   
                tamanho--;
-               return;
+               return jogador;
            }
+   
            noAtual = noAtual.getProximo();
        }
+   
+       return null;
    }
 
     public void removerPorId(int id) {

@@ -44,6 +44,7 @@ public class Jogador {
     public void setPontuacaoHabilidade(int pontuacaoHabilidade){
       this.pontuacaoHabilidade = pontuacaoHabilidade;
     }
+    
 
   
 }
